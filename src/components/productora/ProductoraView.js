@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createProductora, getProductoras, updateProductora } from '../../services/productoraService';
+import { createProductora, getProductoras, updateProductora, deleteProductora } from '../../services/productoraService';
 import Swal from 'sweetalert2';
 const moment = require('moment');
 
@@ -24,7 +24,7 @@ export const ProductoraView = () => {
             console.log(error);
             Swal.close();
         }
-    }
+    };
 
     useEffect(() => {
         listProductoras();
@@ -66,6 +66,26 @@ export const ProductoraView = () => {
             descripcion: productora.descripcion
         });
         setProductoraSelect(productora._id);
+    };
+
+    const handleDeleteProductora = async (id) => {
+        try {
+            const result = await Swal.fire({
+                title: '¿Está seguro de eliminar esta productora?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+            });
+            if (result.isConfirmed) {
+                await deleteProductora(id);
+                Swal.fire('Eliminado', 'La productora fue eliminada.', 'success');
+                listProductoras();
+            }
+        } catch (error) {
+            console.log(error);
+            Swal.fire('Error', 'No se pudo eliminar la productora.', 'error');
+        }
     };
 
     return (
@@ -132,8 +152,18 @@ export const ProductoraView = () => {
                                 <td>{moment(productora.createdAt).format('DD-MM-YYYY HH:mm')}</td>
                                 <td>{moment(productora.updatedAt).format('DD-MM-YYYY HH:mm')}</td>
                                 <td>
-                                    <button className='btn btn-success btn-sm me-2' onClick={(e) => handleUpdateProductora(e, productora)}>Actualizar</button>
-                                    <button className='btn btn-danger btn-sm'>Eliminar</button>
+                                    <button
+                                        className='btn btn-success btn-sm me-2'
+                                        onClick={(e) => handleUpdateProductora(e, productora)}
+                                    >
+                                        Actualizar
+                                    </button>
+                                    <button
+                                        className='btn btn-danger btn-sm'
+                                        onClick={() => handleDeleteProductora(productora._id)}
+                                    >
+                                        Eliminar
+                                    </button>
                                 </td>
                             </tr>
                         ))

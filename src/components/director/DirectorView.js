@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { createDirector, getDirectores, updateDirector, deleteDirector } from '../../services/directorService';
 import Swal from 'sweetalert2';
@@ -12,17 +11,15 @@ export const DirectorView = () => {
 
   const listDirectores = async () => {
     try {
-      Swal.fire({
-        allowOutsideClick: false,
-        text: 'Cargando...',
-      });
+      Swal.fire({ allowOutsideClick: false, text: 'Cargando...' });
       Swal.showLoading();
       const resp = await getDirectores();
       setDirectores(resp.data);
       Swal.close();
     } catch (error) {
-      console.log(error);
+      console.error(error);
       Swal.close();
+      Swal.fire('Error', 'No se pudo cargar la lista de directores', 'error');
     }
   };
 
@@ -37,10 +34,7 @@ export const DirectorView = () => {
   const handleCreateDirector = async (e) => {
     e.preventDefault();
     try {
-      Swal.fire({
-        allowOutsideClick: false,
-        text: 'Guardando...',
-      });
+      Swal.fire({ allowOutsideClick: false, text: 'Guardando...' });
       Swal.showLoading();
       if (directorSelect) {
         await updateDirector(directorSelect, valuesForm);
@@ -51,13 +45,15 @@ export const DirectorView = () => {
       setValuesForm({ nombres: '', estado: '' });
       listDirectores();
       Swal.close();
+      Swal.fire('Éxito', 'Director guardado correctamente', 'success');
     } catch (error) {
-      console.log(error);
+      console.error(error);
       Swal.close();
+      Swal.fire('Error', 'No se pudo guardar el director', 'error');
     }
   };
 
-  const handleUpdateDirector = async (e, director) => {
+  const handleUpdateDirector = (e, director) => {
     e.preventDefault();
     setValuesForm({ nombres: director.nombres, estado: director.estado });
     setDirectorSelect(director._id);
@@ -66,29 +62,30 @@ export const DirectorView = () => {
   const handleDeleteDirector = async (e, directorId) => {
     e.preventDefault();
     try {
-      Swal.fire({
+      const result = await Swal.fire({
         title: '¿Estás seguro?',
         text: '¡Este director se eliminará!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'Cancelar',
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          await deleteDirector(directorId);
-          listDirectores();
-          Swal.fire('Eliminado', 'El director ha sido eliminado', 'success');
-        }
       });
+
+      if (result.isConfirmed) {
+        await deleteDirector(directorId);
+        listDirectores();
+        Swal.fire('Eliminado', 'El director ha sido eliminado', 'success');
+      }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       Swal.close();
+      Swal.fire('Error', 'No se pudo eliminar el director', 'error');
     }
   };
 
   return (
     <div className="container-fluid mt-4">
-      <form onSubmit={(e) => handleCreateDirector(e)}>
+      <form onSubmit={handleCreateDirector}>
         <div className="row">
           <div className="col-lg-8">
             <div className="mb-3">
@@ -99,7 +96,7 @@ export const DirectorView = () => {
                 value={nombres}
                 type="text"
                 className="form-control"
-                onChange={(e) => handleOnChange(e)}
+                onChange={handleOnChange}
               />
             </div>
           </div>
@@ -111,7 +108,7 @@ export const DirectorView = () => {
                 name="estado"
                 value={estado}
                 className="form-select"
-                onChange={(e) => handleOnChange(e)}
+                onChange={handleOnChange}
               >
                 <option value="">--SELECCIONE--</option>
                 <option value="Activo">Activo</option>
@@ -120,7 +117,9 @@ export const DirectorView = () => {
             </div>
           </div>
         </div>
-        <button className="btn btn-primary mb-3">Guardar</button>
+        <button className="btn btn-primary mb-3">
+          {directorSelect ? 'Actualizar' : 'Guardar'}
+        </button>
       </form>
 
       <table className="table">
@@ -135,32 +134,37 @@ export const DirectorView = () => {
           </tr>
         </thead>
         <tbody>
-          {directores.length > 0 &&
-            directores.map((director, index) => {
-              return (
-                <tr key={director._id}>
-                  <th scope="row">{index + 1}</th>
-                  <td>{director.nombres}</td>
-                  <td>{director.estado}</td>
-                  <td>{moment(director.createdAt).format('DD-MM-YYYY HH:mm')}</td>
-                  <td>{moment(director.updatedAt).format('DD-MM-YYYY HH:mm')}</td>
-                  <td>
-                    <button
-                      className="btn btn-success btn-sm me-2"
-                      onClick={(e) => handleUpdateDirector(e, director)}
-                    >
-                      Actualizar
-                    </button>
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={(e) => handleDeleteDirector(e, director._id)}
-                    >
-                      Eliminar
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+          {directores.length > 0 ? (
+            directores.map((director, index) => (
+              <tr key={director._id}>
+                <th scope="row">{index + 1}</th>
+                <td>{director.nombres}</td>
+                <td>{director.estado}</td>
+                <td>{moment(director.createdAt).format('DD-MM-YYYY HH:mm')}</td>
+                <td>{moment(director.updatedAt).format('DD-MM-YYYY HH:mm')}</td>
+                <td>
+                  <button
+                    className="btn btn-success btn-sm me-2"
+                    onClick={(e) => handleUpdateDirector(e, director)}
+                  >
+                    Actualizar
+                  </button>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={(e) => handleDeleteDirector(e, director._id)}
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6" className="text-center">
+                No hay directores para mostrar.
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

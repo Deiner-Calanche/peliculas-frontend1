@@ -4,9 +4,12 @@ import { Header } from './components/ui/Header';
 import { GeneroView } from './components/genero/GeneroView';
 import { MediaView } from './components/media/MediaView';
 import { MediaUpdate } from './components/media/MediaUpdate';
+import { MediaDetail } from './components/media/MediaDetail';
 import { ProductoraView } from './components/productora/ProductoraView';
 import { TipoView } from './components/tipo/TipoView';
 import { DirectorView } from './components/director/DirectorView';
+
+
 
 function App() {
   return (
@@ -19,6 +22,7 @@ function App() {
         <Route exact path="/productora" component={ProductoraView} />
         <Route exact path="/tipo" component={TipoView} />
         <Route exact path="/medias/edit/:mediaId" component={MediaUpdate} />
+        <Route exact path="/medias/detail/:id" component={MediaDetail} /> {/* <-- Ruta agregada */}
         <Redirect to="/" />
       </Switch>
     </Router>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createTipo, getTipos, updateTipo } from '../../services/tipoService';
+import { createTipo, getTipos, updateTipo, deleteTipo } from '../../services/tipoService';
 import Swal from 'sweetalert2';
 const moment = require('moment');
 
@@ -24,7 +24,7 @@ export const TipoView = () => {
             console.log(error);
             Swal.close();
         }
-    }
+    };
 
     useEffect(() => {
         listTipos();
@@ -57,7 +57,7 @@ export const TipoView = () => {
         }
     };
 
-    const handleUpdateTipo = async (e, tipo) => {
+    const handleUpdateTipo = (e, tipo) => {
         e.preventDefault();
         setValuesForm({
             nombre: tipo.nombre,
@@ -65,6 +65,26 @@ export const TipoView = () => {
             descripcion: tipo.descripcion
         });
         setTipoSelect(tipo._id);
+    };
+
+    const handleDeleteTipo = async (id) => {
+        try {
+            const result = await Swal.fire({
+                title: '¿Está seguro de eliminar este tipo?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+            });
+            if (result.isConfirmed) {
+                await deleteTipo(id);
+                Swal.fire('Eliminado', 'El tipo fue eliminado.', 'success');
+                listTipos();
+            }
+        } catch (error) {
+            console.log(error);
+            Swal.fire('Error', 'No se pudo eliminar el tipo.', 'error');
+        }
     };
 
     return (
@@ -122,7 +142,7 @@ export const TipoView = () => {
                             <td> {moment(tipo.updatedAt).format('DD-MM-YYYY HH:mm')} </td>
                             <td>
                                 <button className='btn btn-success btn-sm me-2' onClick={(e) => handleUpdateTipo(e, tipo)}>Actualizar</button>
-                                <button className='btn btn-danger btn-sm'>Eliminar</button>
+                                <button className='btn btn-danger btn-sm' onClick={() => handleDeleteTipo(tipo._id)}>Eliminar</button>
                             </td>
                         </tr>
                     ))}

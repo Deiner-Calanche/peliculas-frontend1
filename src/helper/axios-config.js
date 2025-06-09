@@ -1,13 +1,11 @@
-import axios from 'axios';
+import axios from "axios";
 
-const axiosInstance  = axios.create({
- baseURL: 'http://localhost:3000/', 
+const axiosInstance = axios.create({
+  baseURL: 'http://localhost:3000/',
+  // baseURL: "https://proyecto-peliculas-2.onrender.com",
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
-export {
-    axiosInstance
-}
-
+export { axiosInstance };
