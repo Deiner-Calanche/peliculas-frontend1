@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getMedioById } from '../../services/mediaService';
-import './MediaDetail.css'; 
+import './MediaDetail.css';
 
 export const MediaDetail = () => {
   const { id } = useParams();
@@ -9,19 +9,20 @@ export const MediaDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchMedia = async () => {
-    try {
-      setLoading(true);
-      const { data } = await getMedioById(id);
-      setMedia(data);
-    } catch (err) {
-      setError('No se pudo cargar el detalle del medio.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchMedia = async () => {
+      try {
+        setLoading(true);
+        const { data } = await getMedioById(id);
+        setMedia(data);
+        setError(null);
+      } catch (err) {
+        setError('No se pudo cargar el detalle del medio.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchMedia();
   }, [id]);
 
@@ -46,7 +47,12 @@ export const MediaDetail = () => {
             <li><strong>🎬 Tipo:</strong> {media.tipo?.nombre || 'No definido'}</li>
             <li><strong>🎭 Género:</strong> {media.genero?.nombre || 'No definido'}</li>
             <li><strong>📅 Año de estreno:</strong> {media.anio_estreno || 'N/A'}</li>
-            <li><strong>🔗 URL:</strong> <a href={media.url} target="_blank" rel="noopener noreferrer">{media.url}</a></li>
+            <li>
+              <strong>🔗 URL:</strong>{' '}
+              <a href={media.url} target="_blank" rel="noopener noreferrer">
+                {media.url}
+              </a>
+            </li>
             <li><strong>📝 Sinopsis:</strong> {media.sinopsis || 'No disponible'}</li>
           </ul>
           <div className="media-back">

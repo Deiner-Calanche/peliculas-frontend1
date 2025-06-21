@@ -1,0 +1,45 @@
+.unauthorized-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1c1c1c, #3a3a3a);
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.unauthorized-card {
+  background-color: #2b2b2b;
+  padding: 40px 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  max-width: 400px;
+  width: 100%;
+}
+
+.unauthorized-card h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #ff4c4c;
+}
+
+.unauthorized-card p {
+  font-size: 16px;
+  margin-bottom: 25px;
+  color: #ddd;
+}
+
+.unauthorized-card a {
+  text-decoration: none;
+  background-color: #e50914;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.unauthorized-card a:hover {
+  background-color: #f40612;
+}

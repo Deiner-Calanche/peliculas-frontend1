@@ -1,0 +1,113 @@
+.login-background {
+  background-image: url("https://assets.nflxext.com/ffe/siteui/vlv3/74cfc33c-9f87-4b6d-a3a3-9ed631f2f76e/caabedcb-015c-4526-b436-cab2b1b4ad11/CO-es-20240610-popsignuptwoweeks-perspective_alpha_website_large.jpg");
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 40px 30px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+  color: white;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  transition: transform 0.3s ease-in-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.login-form h2 {
+  margin-bottom: 20px;
+  font-size: 26px;
+  text-align: center;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  background-color: #222;
+  border: 1px solid #555;
+  border-radius: 6px;
+  color: white;
+  font-size: 15px;
+  transition: border 0.2s;
+}
+
+.login-form input:focus {
+  outline: none;
+  border-color: #e50914;
+}
+
+.login-form button {
+  width: 100%;
+  background-color: #e50914;
+  color: white;
+  padding: 12px;
+  border: none;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-form button:hover {
+  background-color: #f40612;
+}
+
+.login-form button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.extra-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #aaa;
+  margin-top: 10px;
+}
+
+.extra-options a {
+  color: #aaa;
+  text-decoration: none;
+}
+
+.extra-options a:hover {
+  text-decoration: underline;
+}
+
+.register-link {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #bbb;
+}
+
+.register-link a {
+  color: white;
+  font-weight: bold;
+}
+
+.error-box {
+  background-color: #ff4d4d;
+  padding: 10px 15px;
+  border-radius: 4px;
+  color: white;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
